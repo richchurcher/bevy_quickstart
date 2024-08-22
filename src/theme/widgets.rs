@@ -2,17 +2,10 @@
 
 use bevy::{ecs::system::EntityCommands, prelude::*, ui::Val::*};
 
-use crate::theme::{interaction::InteractionPalette, palette::*};
-
 /// An extension trait for spawning UI widgets.
 pub trait Widgets {
-    /// Spawn a simple button with text.
     fn button(&mut self, text: impl Into<String>) -> EntityCommands;
-
-    /// Spawn a simple header label. Bigger than [`Widgets::label`].
     fn header(&mut self, text: impl Into<String>) -> EntityCommands;
-
-    /// Spawn a simple text label.
     fn label(&mut self, text: impl Into<String>) -> EntityCommands;
 }
 
@@ -28,13 +21,7 @@ impl<T: Spawn> Widgets for T {
                     align_items: AlignItems::Center,
                     ..default()
                 },
-                background_color: BackgroundColor(NODE_BACKGROUND),
                 ..default()
-            },
-            InteractionPalette {
-                none: NODE_BACKGROUND,
-                hovered: BUTTON_HOVERED_BACKGROUND,
-                pressed: BUTTON_PRESSED_BACKGROUND,
             },
         ));
         entity.with_children(|children| {
@@ -44,7 +31,6 @@ impl<T: Spawn> Widgets for T {
                     text,
                     TextStyle {
                         font_size: 40.0,
-                        color: BUTTON_TEXT,
                         ..default()
                     },
                 ),
@@ -65,7 +51,6 @@ impl<T: Spawn> Widgets for T {
                     align_items: AlignItems::Center,
                     ..default()
                 },
-                background_color: BackgroundColor(NODE_BACKGROUND),
                 ..default()
             },
         ));
@@ -76,7 +61,6 @@ impl<T: Spawn> Widgets for T {
                     text,
                     TextStyle {
                         font_size: 40.0,
-                        color: HEADER_TEXT,
                         ..default()
                     },
                 ),
@@ -92,7 +76,6 @@ impl<T: Spawn> Widgets for T {
                 text,
                 TextStyle {
                     font_size: 24.0,
-                    color: LABEL_TEXT,
                     ..default()
                 },
             )

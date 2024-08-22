@@ -5,7 +5,7 @@ use crate::screens::Screen;
 
 pub(super) fn plugin(app: &mut App) {
     app.add_loading_state(
-        LoadingState::new(Screen::Splash)
+        LoadingState::new(Screen::Loading)
             .continue_to_state(Screen::Title)
             .load_collection::<AudioAssets>()
             .load_collection::<FontAssets>()

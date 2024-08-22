@@ -1,5 +1,3 @@
-//! A splash screen that plays briefly at startup.
-
 use bevy::{
     input::common_conditions::input_just_pressed,
     prelude::*,
@@ -32,13 +30,6 @@ pub(super) fn plugin(app: &mut App) {
             check_splash_timer.in_set(AppSet::Update),
         )
             .run_if(in_state(Screen::Splash)),
-    );
-
-    // Exit the splash screen early if the player hits escape.
-    app.add_systems(
-        Update,
-        continue_to_loading_screen
-            .run_if(input_just_pressed(KeyCode::Escape).and_then(in_state(Screen::Splash))),
     );
 }
 
@@ -137,10 +128,6 @@ fn tick_splash_timer(time: Res<Time>, mut timer: ResMut<SplashTimer>) {
 
 fn check_splash_timer(timer: ResMut<SplashTimer>, mut next_screen: ResMut<NextState<Screen>>) {
     if timer.0.just_finished() {
-        // next_screen.set(Screen::Loading);
+        next_screen.set(Screen::Loading);
     }
-}
-
-fn continue_to_loading_screen(mut next_screen: ResMut<NextState<Screen>>) {
-    // next_screen.set(Screen::Loading);
 }
