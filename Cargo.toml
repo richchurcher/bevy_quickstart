@@ -17,6 +17,9 @@ tracing = { version = "0.1", features = [
     "max_level_debug",
     "release_max_level_warn",
 ] }
+bevy_asset_loader = "0.21.0"
+leafwing-input-manager = "0.15.0"
+bevy-inspector-egui = "0.25.2"
 
 [features]
 default = [

@@ -307,7 +307,6 @@ Use the [`Screen`](../src/screen/mod.rs) enum to represent your game's screens a
 pub enum Screen {
     #[default]
     Splash,
-    Loading,
     Title,
     Credits,
     Gameplay,

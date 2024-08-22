@@ -8,6 +8,7 @@ use bevy::{
     input::common_conditions::input_just_pressed,
     prelude::*,
 };
+use bevy_inspector_egui::{bevy_egui::EguiSettings, quick::WorldInspectorPlugin};
 
 use crate::screens::Screen;
 
@@ -16,11 +17,15 @@ pub(super) fn plugin(app: &mut App) {
     app.add_systems(Update, log_transitions::<Screen>);
 
     // Toggle the debug overlay for UI.
-    app.add_plugins(DebugUiPlugin);
+    app.add_plugins((DebugUiPlugin, WorldInspectorPlugin::new()));
     app.add_systems(
         Update,
         toggle_debug_ui.run_if(input_just_pressed(TOGGLE_KEY)),
     );
+    app.insert_resource(EguiSettings {
+        scale_factor: 1.5,
+        ..default()
+    });
 }
 
 const TOGGLE_KEY: KeyCode = KeyCode::Backquote;

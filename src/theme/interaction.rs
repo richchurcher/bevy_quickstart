@@ -1,18 +1,16 @@
 use bevy::prelude::*;
 
-use crate::{asset_tracking::LoadResource, audio::SoundEffect};
+use crate::audio::SoundEffect;
 
 pub(super) fn plugin(app: &mut App) {
     app.register_type::<InteractionPalette>();
-    app.load_resource::<InteractionAssets>();
     app.add_systems(
         Update,
         (
             trigger_on_press,
-            apply_interaction_palette,
-            trigger_interaction_sound_effect,
-        )
-            .run_if(resource_exists::<InteractionAssets>),
+            // apply_interaction_palette,
+            // trigger_interaction_sound_effect,
+        ),
     );
 }
 

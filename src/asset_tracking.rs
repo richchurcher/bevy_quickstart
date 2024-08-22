@@ -1,58 +1,40 @@
-//! A high-level way to load collections of asset handles as resources.
-
 use bevy::prelude::*;
+use bevy_asset_loader::prelude::*;
+
+use crate::screens::Screen;
 
 pub(super) fn plugin(app: &mut App) {
-    app.init_resource::<ResourceHandles>();
-    app.add_systems(PreUpdate, load_resource_assets);
+    app.add_loading_state(
+        LoadingState::new(Screen::Splash)
+            .continue_to_state(Screen::Title)
+            .load_collection::<AudioAssets>()
+            .load_collection::<FontAssets>()
+            .load_collection::<TextureAssets>(),
+    );
 }
 
-pub trait LoadResource {
-    /// This will load the [`Resource`] as an [`Asset`]. When all of its asset dependencies
-    /// have been loaded, it will be inserted as a resource. This ensures that the resource only
-    /// exists when the assets are ready.
-    fn load_resource<T: Resource + Asset + Clone + FromWorld>(&mut self) -> &mut Self;
+#[derive(AssetCollection, Resource)]
+pub struct AudioAssets {
+    // #[asset(path = "audio/end_level.ogg")]
+    // pub end_level: Handle<AudioSource>,
+    // #[asset(path = "audio/falling.ogg")]
+    // pub falling: Handle<AudioSource>,
+    // #[asset(path = "audio/jump.ogg")]
+    // pub jump: Handle<AudioSource>,
+    // #[asset(path = "audio/sheep_jump.ogg")]
+    // pub sheep_jump: Handle<AudioSource>,
+    // #[asset(path = "audio/sheep_falling.ogg")]
+    // pub sheep_falling: Handle<AudioSource>,
 }
 
-impl LoadResource for App {
-    fn load_resource<T: Resource + Asset + Clone + FromWorld>(&mut self) -> &mut Self {
-        self.init_asset::<T>();
-        let world = self.world_mut();
-        let value = T::from_world(world);
-        let assets = world.resource::<AssetServer>();
-        let handle = assets.add(value);
-        let mut handles = world.resource_mut::<ResourceHandles>();
-        handles.waiting.push((handle.untyped(), |world, handle| {
-            let assets = world.resource::<Assets<T>>();
-            if let Some(value) = assets.get(handle.id().typed::<T>()) {
-                world.insert_resource(value.clone());
-            }
-        }));
-        self
-    }
+#[derive(AssetCollection, Resource)]
+pub struct FontAssets {
+    // #[asset(path = "fonts/PixelifySans-Medium.ttf")]
+    // pub pixelify_sans_medium: Handle<Font>,
 }
 
-/// A function that inserts a loaded resource.
-type InsertLoadedResource = fn(&mut World, &UntypedHandle);
-
-#[derive(Resource, Default)]
-struct ResourceHandles {
-    waiting: Vec<(UntypedHandle, InsertLoadedResource)>,
-    finished: Vec<UntypedHandle>,
-}
-
-fn load_resource_assets(world: &mut World) {
-    world.resource_scope(|world, mut resource_handles: Mut<ResourceHandles>| {
-        world.resource_scope(|world, assets: Mut<AssetServer>| {
-            for _ in 0..resource_handles.waiting.len() {
-                let (handle, insert_fn) = resource_handles.waiting.pop().unwrap();
-                if assets.is_loaded_with_dependencies(&handle) {
-                    insert_fn(world, &handle);
-                    resource_handles.finished.push(handle);
-                } else {
-                    resource_handles.waiting.push((handle, insert_fn));
-                }
-            }
-        });
-    });
+#[derive(AssetCollection, Resource)]
+pub struct TextureAssets {
+    #[asset(path = "textures/player.png")]
+    pub player: Handle<Image>,
 }
