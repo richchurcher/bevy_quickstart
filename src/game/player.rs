@@ -3,15 +3,17 @@ use bevy::{
     prelude::*,
 };
 use leafwing_input_manager::{
-    action_state::ActionState, input_map::InputMap, Actionlike, InputManagerBundle,
+    action_state::ActionState, input_map::InputMap, plugin::InputManagerPlugin, Actionlike,
+    InputManagerBundle,
 };
 
 use crate::{asset_tracking::TextureAssets, screens::Screen, AppSet};
 
-use super::movement::MovementController;
+use super::{animation::PlayerAnimation, movement::MovementController};
 
 pub(super) fn plugin(app: &mut App) {
     app.register_type::<Player>();
+    app.add_plugins(InputManagerPlugin::<Move>::default());
 
     app.add_systems(
         Update,
@@ -48,9 +50,9 @@ fn spawn_player(
     texture_assets: Res<TextureAssets>,
     mut texture_atlas_layouts: ResMut<Assets<TextureAtlasLayout>>,
 ) {
-    let layout = TextureAtlasLayout::from_grid(UVec2::splat(64), 1, 1, None, None);
+    let layout = TextureAtlasLayout::from_grid(UVec2::splat(64), 3, 2, None, None);
     let texture_atlas_layout = texture_atlas_layouts.add(layout);
-    // let player_animation = PlayerAnimation::new();
+    let player_animation = PlayerAnimation::new();
 
     let input_map = InputMap::new([
         (Move::Up, KeyCode::KeyW),
@@ -69,14 +71,13 @@ fn spawn_player(
         },
         TextureAtlas {
             layout: texture_atlas_layout.clone(),
-            // index: player_animation.get_atlas_index(),
-            index: 0,
+            index: player_animation.get_atlas_index(),
         },
         MovementController {
             max_speed: config.max_speed,
             ..default()
         },
-        // player_animation,
+        player_animation,
         StateScoped(Screen::Gameplay),
     ));
 }
@@ -85,22 +86,17 @@ fn record_player_directional_input(
     mut player: Query<(&ActionState<Move>, &mut MovementController), With<Player>>,
 ) {
     if let Ok((action_state, mut movement_controller)) = player.get_single_mut() {
-        let actions = action_state.get_pressed();
-        let Some(action) = actions.first() else {
-            return;
-        };
-
         let mut intent = Vec2::ZERO;
-        if *action == Move::Up {
+        if action_state.pressed(&Move::Up) {
             intent.y += 1.;
         }
-        if *action == Move::Down {
+        if action_state.pressed(&Move::Down) {
             intent.y -= 1.;
         }
-        if *action == Move::Right {
+        if action_state.pressed(&Move::Right) {
             intent.x += 1.;
         }
-        if *action == Move::Left {
+        if action_state.pressed(&Move::Left) {
             intent.x -= 1.;
         }
 
