@@ -9,8 +9,15 @@ pub(super) fn plugin(app: &mut App) {
             .continue_to_state(Screen::Title)
             .load_collection::<AudioAssets>()
             .load_collection::<FontAssets>()
+            .load_collection::<LevelAssets>()
             .load_collection::<TextureAssets>(),
     );
+}
+
+#[derive(AssetCollection, Resource)]
+pub struct LevelAssets {
+    #[asset(path = "levels/Scene.glb#Scene0")]
+    pub scene: Handle<Scene>,
 }
 
 #[derive(AssetCollection, Resource)]

@@ -11,6 +11,7 @@ use bevy::{
     audio::{AudioPlugin, Volume},
     prelude::*,
 };
+use blenvy::BlenvyPlugin;
 
 pub struct AppPlugin;
 
@@ -34,7 +35,7 @@ impl Plugin for AppPlugin {
                         prevent_default_event_handling: true,
                         resizable: false,
                         resolution: (1920., 1080.).into(),
-                        title: "bevy_quickstart".to_string(),
+                        title: "three".to_string(),
                         ..default()
                     }
                     .into(),
@@ -50,6 +51,7 @@ impl Plugin for AppPlugin {
 
         app.add_plugins((
             asset_tracking::plugin,
+            BlenvyPlugin::default(),
             game::plugin,
             screens::plugin,
             theme::plugin,
@@ -80,9 +82,10 @@ enum AppSet {
 }
 
 fn spawn_camera(mut commands: Commands) {
-    commands.spawn((
-        Name::new("Camera"),
-        Camera2dBundle::default(),
-        IsDefaultUiCamera,
-    ));
+    // commands.spawn((
+    //     Name::new("Camera"),
+    //     Camera2dBundle::default(),
+    //     IsDefaultUiCamera,
+    // ));
+    commands.spawn((Name::new("3D Camera"), Camera3dBundle::default()));
 }
