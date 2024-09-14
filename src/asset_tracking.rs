@@ -13,6 +13,6 @@ pub(super) fn plugin(app: &mut App) {
 
 #[derive(AssetCollection, Resource)]
 pub struct LevelAssets {
-    #[asset(path = "levels/Scene.glb#Scene0")]
+    #[asset(path = "levels/without_camera.glb#Scene0")]
     pub donut: Handle<Scene>,
 }

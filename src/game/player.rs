@@ -15,7 +15,7 @@ pub struct Donut;
 
 #[derive(Debug)]
 pub struct SpawnPlayer {
-    pub translation: Vec2,
+    pub translation: Vec3,
 }
 
 impl Command for SpawnPlayer {
@@ -33,11 +33,26 @@ fn spawn_player(
         Name::new("Player"),
         Donut,
         SceneBundle {
-            // scene: level_assets.scene.clone(),
             scene: level_assets.donut.clone(),
-            transform: Transform::from_translation(config.translation.extend(1.)),
+            transform: Transform::from_translation(config.translation),
             ..default()
         },
         StateScoped(Screen::Gameplay),
+    ));
+    commands.spawn((
+        Name::new("3D Camera"),
+        Camera3dBundle {
+            transform: Transform::from_xyz(-2.5, 4.5, 9.0).looking_at(config.translation, Vec3::Y),
+            ..default()
+        },
+        StateScoped(Screen::Gameplay),
+    ));
+    commands.spawn((
+        Name::new("Point light"),
+        PointLightBundle {
+            transform: Transform::from_translation(Vec3::new(5.0, 5.0, 0.0)),
+            ..default()
+        },
+        StateScoped(Screen::Title),
     ));
 }

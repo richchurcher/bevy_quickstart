@@ -26,7 +26,7 @@ impl Default for CameraSettings {
         Self {
             // These values are completely arbitrary, chosen because they seem to produce
             // "sensible" results for this example. Adjust as required.
-            orbit_distance: 10.0,
+            orbit_distance: 5.0,
             pitch_speed: 0.5,
             pitch_range: -pitch_limit..pitch_limit,
             roll_speed: 1.0,

@@ -8,7 +8,7 @@ pub(super) fn plugin(_app: &mut App) {}
 /// We use this style when a command requires no configuration.
 pub fn spawn_level(world: &mut World) {
     SpawnPlayer {
-        translation: Vec2::ZERO,
+        translation: Vec3::ZERO,
     }
     .apply(world);
 }
