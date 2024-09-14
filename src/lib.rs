@@ -1,5 +1,6 @@
 mod asset_tracking;
 pub mod audio;
+mod camera;
 #[cfg(feature = "dev")]
 mod dev_tools;
 mod game;
@@ -11,18 +12,12 @@ use bevy::{
     audio::{AudioPlugin, Volume},
     prelude::*,
 };
-use blenvy::BlenvyPlugin;
 
 pub struct AppPlugin;
 
 impl Plugin for AppPlugin {
     fn build(&self, app: &mut App) {
-        // Spawn the main camera.
-        app.add_systems(Startup, spawn_camera);
-
-        // Add Bevy plugins.
-        app.insert_resource(Msaa::Off)
-            .insert_resource(ClearColor(Color::linear_rgb(0., 0., 0.)))
+        app.insert_resource(ClearColor(Color::linear_rgb(0., 0., 0.)))
             .add_plugins((DefaultPlugins
                 .set(AssetPlugin {
                     meta_check: AssetMetaCheck::Never,
@@ -51,7 +46,7 @@ impl Plugin for AppPlugin {
 
         app.add_plugins((
             asset_tracking::plugin,
-            BlenvyPlugin::default(),
+            camera::plugin,
             game::plugin,
             screens::plugin,
             theme::plugin,
@@ -79,13 +74,4 @@ enum AppSet {
     RecordInput,
     /// Do everything else (consider splitting this into further variants).
     Update,
-}
-
-fn spawn_camera(mut commands: Commands) {
-    // commands.spawn((
-    //     Name::new("Camera"),
-    //     Camera2dBundle::default(),
-    //     IsDefaultUiCamera,
-    // ));
-    commands.spawn((Name::new("3D Camera"), Camera3dBundle::default()));
 }

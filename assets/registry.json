@@ -16070,6 +16070,17 @@
       "type": "object",
       "typeInfo": "Struct"
     },
+    "three::game::player::Donut": {
+      "additionalProperties": false,
+      "isComponent": true,
+      "isResource": false,
+      "long_name": "three::game::player::Donut",
+      "properties": {},
+      "required": [],
+      "short_name": "Donut",
+      "type": "object",
+      "typeInfo": "Struct"
+    },
     "three::game::player::Move": {
       "isComponent": false,
       "isResource": false,
@@ -16083,17 +16094,6 @@
       "short_name": "Move",
       "type": "string",
       "typeInfo": "Enum"
-    },
-    "three::game::player::Player": {
-      "additionalProperties": false,
-      "isComponent": true,
-      "isResource": false,
-      "long_name": "three::game::player::Player",
-      "properties": {},
-      "required": [],
-      "short_name": "Player",
-      "type": "object",
-      "typeInfo": "Struct"
     },
     "three::screens::splash::SplashTimer": {
       "isComponent": false,

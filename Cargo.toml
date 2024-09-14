@@ -19,7 +19,6 @@ tracing = { version = "0.1", features = [
 bevy_asset_loader = { features = [ "3d" ], version = "0.21.0" }
 leafwing-input-manager = "0.15.0"
 bevy-inspector-egui = "0.25.2"
-blenvy = "0.1.0-alpha.1"
 
 [features]
 default = [

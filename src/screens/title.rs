@@ -16,6 +16,16 @@ fn spawn_title_screen(mut commands: Commands) {
             #[cfg(not(target_family = "wasm"))]
             children.button("Exit").observe(exit_app);
         });
+
+    commands.spawn((
+        Name::new("Camera"),
+        Camera2dBundle {
+            transform: Transform::from_xyz(-2.5, 4.5, 9.0).looking_at(Vec3::ZERO, Vec3::Y),
+            ..default()
+        },
+        IsDefaultUiCamera,
+        StateScoped(Screen::Title),
+    ));
 }
 
 fn enter_gameplay_screen(_trigger: Trigger<OnPress>, mut next_screen: ResMut<NextState<Screen>>) {
